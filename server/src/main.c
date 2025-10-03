@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 15:02:56 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/03 18:26:36 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/03 19:50:53 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,6 @@ void	safe_terminate(int signo, siginfo_t *info, void *context)
 	(void)info;
 	(void)context;
 	signal_info = signo;
-}
-
-int		make_fd_nonblocking(int fd)
-{
-	int flags;
-
-	flags = fcntl(fd, F_GETFL, 0);
-	if (flags == -1)
-		return (0);
-	flags |= O_NONBLOCK;
-	if (fcntl(fd, F_SETFL, flags) < 0)
-		return (0);
-	return (1);
 }
 
 void	terminate_child(void *chld)
@@ -71,19 +58,6 @@ void terminate_srv(struct s_server *srv, const char *msg, t_u8 ret_code)
 	exit(ret_code);
 }
 
-
-int	socket_exists(void)
-{
-	struct stat	data;
-
-	switch(stat(SOCKET_PATH, &data))
-	{
-		case (0):
-			return (1);
-		default:
-			return (0);
-	}
-}
 
 # define FAILINITMSG dprintf(STDERR_FILENO, "Failed to init server: %s\n", strerror(errno))
 int init_server(struct s_server *srv)
@@ -184,6 +158,7 @@ void	create_new_connection(struct s_server *srv)
 	}
 	child->epoll_parent = srv->epoll_fd;
 	cdll_push_back(srv->connections, node);
+	printf("New connection added to connections list %d\n", child_addr);
 	return ;
 }
 
@@ -205,6 +180,7 @@ int	handle_msg(struct s_server *srv, int fd)
 		return (-1);
 	else if (status < 0)
 		return (-1);
+	printf("Prechunk is %d\n", prechunk);
 	if (prechunk != 1)
 		return (1);
 	status = read(fd, (void *)&header, sizeof(header));
@@ -214,6 +190,7 @@ int	handle_msg(struct s_server *srv, int fd)
 		return (-1);
 	else if (status < (long int)sizeof(header))
 		return (-1);
+	printf("Reading message content\n");
 	if (header.msg_type == MTYPE_NONE)
 	{
 		while (--header.content_length)
@@ -301,6 +278,7 @@ void	main_loop(struct s_server *srv)
 			dprintf(STDERR_FILENO, "EPOLL error: %s\n", strerror(errno));
 			continue ;
 		}
+		printf("Epoll events: %d\n", count);
 		while (idx < count)
 		{
 			if (events[idx].data.fd == srv->server_fd)
@@ -326,6 +304,7 @@ void	main_loop(struct s_server *srv)
 				{
 					// client disconnected or was terminated by an error.
 					// cleanup
+					printf("Removing client from server: %d\n", events[idx].data.fd);
 					remove_connection_for_fd(srv, events[idx].data.fd);
 				}
 			}

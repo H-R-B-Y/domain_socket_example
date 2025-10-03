@@ -1,0 +1,18 @@
+# TODO
+
+## Server
+- Create rooms for the clients
+- Split out code into folders and break up the code to be neater
+- Create a better framework around message handling from clients
+- Some way of identifying clients?
+
+
+## Client
+- Create client
+- Allow client to send and recieve messages from the server
+- Allow client to create rooms and/or join rooms
+- Some way of identifying clients
+
+## Other
+- Update the cdll library or move to a different type of structure for storing connections and clubs
+- Abstract message / message header functions and reading from socket to be less fragile
