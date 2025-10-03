@@ -100,4 +100,28 @@ else
 	@find . -name '*.gcno' -delete
 endif
 
-.PHONY: all clean fclean re  submodule-status install-submodules pull-submodules pre post coverage
+cachegrind:
+ifeq ($(TEST_SCRIPT),)
+	@printf "There has been an issue running cachegrind: no script to run program\n"
+else
+	@rm -rf cachegrind_reports
+	@mkdir -p cachegrind_reports
+	@valgrind --tool=cachegrind --cachegrind-out-file=cachegrind_reports/cachegrind.out \
+		bash -c $(TEST_SCRIPT)
+	@cg_annotate cachegrind_reports/cachegrind.out > cachegrind_reports/cachegrind.txt
+	@printf "Cachegrind report written to cachegrind_reports/cachegrind.txt\n"
+endif
+
+perf:
+ifeq ($(TEST_SCRIPT),)
+	@printf "There has been an issue running perf: no script to run program\n"
+else
+	@rm -rf perf_reports
+	@mkdir -p perf_reports
+	@perf stat -e cache-references,cache-misses,L1-dcache-loads,L1-dcache-load-misses,LLC-loads,LLC-load-misses \
+		bash -c $(TEST_SCRIPT) 2> perf_reports/perf.txt
+	@printf "Perf stats written to perf_reports/perf.txt\n"
+endif
+
+
+.PHONY: all clean fclean re  submodule-status install-submodules pull-submodules pre post coverage cachegrind perf
