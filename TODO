@@ -16,3 +16,12 @@
 ## Other
 - Update the cdll library or move to a different type of structure for storing connections and clubs
 - Abstract message / message header functions and reading from socket to be less fragile
+
+
+# Future
+
+- Templatify the server and client:
+connections are part of the server, they are either given uuid's or we just use the fd.
+user data gets assigned to the connection, this can then be used by software for storing information related to the software.
+we just make the server act more like an api with calls to send messages, and handler function pointers for accepting new connections and on message handlers.
+client can also be created as an api.
