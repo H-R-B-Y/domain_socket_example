@@ -18,6 +18,12 @@ LIBFT			:= $(LIBFT_DIR)/libft.a
 SRC_DIR			:= ./src
 
 SRCS			:= \
+				./src/main_loop.c \
+				./src/server/terminations.c \
+				./src/server/init.c \
+				./src/handlers/new_connection.c \
+				./src/handlers/handle_msg.c \
+				./src/handlers/handle_disconnect.c \
 				\
 
 

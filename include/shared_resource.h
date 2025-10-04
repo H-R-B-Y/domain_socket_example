@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 16:22:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/03 19:29:04 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/04 11:29:14 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # ifndef _XOPEN_SOURCE
 #  define _XOPEN_SOURCE 700
 # endif
-
 
 # include <unistd.h>
 # include <fcntl.h>
@@ -77,14 +76,30 @@ static inline int		make_fd_nonblocking(int fd)
 	return (1);
 }
 
+static inline int safe_read(int fd, void *buf, size_t count)
+{
+	ssize_t	status;
+
+	status = read(fd, buf, count);
+	if (status == 0)
+		return (0);
+	if (status < 0)
+		return (-1);
+	if (status < (ssize_t)count)
+		return (-1);
+	return (1);
+}
+
+enum e_message_types {
+	MTYPE_NONE,
+	MTYPE_STR,
+	MTYPE_TYPE_COUNT
+};
+
 struct s_header_chunk
 {
-	enum {
-		MTYPE_NONE,
-		MTYPE_STR,
-		MTYPE_TYPE_COUNT
-	}	msg_type;
-	size_t	content_length;
+	enum e_message_types	msg_type;
+	size_t					content_length;
 };
 
 #endif

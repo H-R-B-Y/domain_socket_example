@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 14:37:46 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/03 16:46:57 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/04 11:32:31 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,16 @@
 #  define SOCKET_PATH "/tmp/server_5790.sock"
 # endif
 
+extern t_vs32 g_signal_info;
+
+static inline void	signal_global_notifier(int signo, siginfo_t *info, void *context)
+{
+	(void)info;
+	(void)context;
+	g_signal_info = signo;
+}
+
+
 struct s_connection
 {
 	int	fd;
@@ -55,6 +65,9 @@ struct s_room
 
 };
 
+typedef int (*t_msg_handler)(void *srv, struct s_header_chunk *header, int client);
+
+
 struct s_server
 {
 	int					server_fd;
@@ -62,6 +75,19 @@ struct s_server
 	struct sockaddr_un	addr;
 	t_cdll				*connections;
 	t_cdll				*rooms;
+	t_msg_handler		handlers[MTYPE_TYPE_COUNT];
 };
 
+
+void	main_loop(struct s_server *srv);
+void	terminate_child(void *chld);
+void	terminate_room(void *room);
+void terminate_srv(struct s_server *srv, const char *msg, t_u8 ret_code);
+int init_server(struct s_server *srv);
+void	setup_signal_handler(void);
+
+void	create_new_connection(struct s_server *srv);
+int	handle_msg(struct s_server *srv, int fd);
+int	handle_disconnect(struct s_server *srv, int fd);
+int	remove_connection_for_fd(struct s_server *srv, int fd);
 #endif
