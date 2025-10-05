@@ -2,16 +2,18 @@
 
 ## Server
 - Create rooms for the clients
-- Split out code into folders and break up the code to be neater
+- (DONE) Split out code into folders
+- break up the code to be neater
 - Create a better framework around message handling from clients
-- Some way of identifying clients?
+- Test stateful reading with partial reads
+
 
 
 ## Client
-- Create client
-- Allow client to send and recieve messages from the server
+- (DONE) Create client
+- (DONE) Allow client to send and recieve messages from the server
 - Allow client to create rooms and/or join rooms
-- Some way of identifying clients
+
 
 ## Other
 - Update the cdll library or move to a different type of structure for storing connections and clubs
@@ -25,3 +27,10 @@ connections are part of the server, they are either given uuid's or we just use 
 user data gets assigned to the connection, this can then be used by software for storing information related to the software.
 we just make the server act more like an api with calls to send messages, and handler function pointers for accepting new connections and on message handlers.
 client can also be created as an api.
+
+Then for threading the rooms:
+room is a thread, room gets it's own epoll and the connections are moved from the servers epoll list to the threads.
+Then if the connection terminates in the child thread then we just need some functions in the server api to cleanup the connection, and re-coup the uuid for that connection.
+
+disconnects can be handled in the room so long as we account for it in the state map.
+

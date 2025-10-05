@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 11:00:28 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/04 11:30:36 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/05 00:55:21 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,53 +39,59 @@ void	broadcast_message(struct s_server *srv, char *buffer, size_t size)
 	}
 }
 
-int	handle_msg(struct s_server *srv, int fd)
+struct s_connection *get_connection(struct s_server *srv, int fd)
 {
-	(void)srv;
-	char					empty;
-	int						prechunk;
-	struct s_header_chunk	header;
-	int						status;
+	struct s_cdll_node	*node;
+	size_t				idx;
 
-	status = read(fd, (void *)&prechunk, PRE_HEADER_CHUNK);
-	if (status == 0)
-		return (-1);
-	else if (status < 0)
-		return (-1);
-	printf("Prechunk is %d\n", prechunk);
-	if (prechunk != 1)
-		return (1);
-	status = read(fd, (void *)&header, sizeof(header));
-	if (status == 0)
-		return (-1);
-	else if (status < 0)
-		return (-1);
-	else if (status < (long int)sizeof(header))
-		return (-1);
-	printf("Reading message content\n");
-	if (header.msg_type == MTYPE_NONE)
+	idx = 0;
+	node = srv->connections->head;
+	while (idx < srv->connections->count)
 	{
-		while (--header.content_length)
-		{
-			read(fd, &empty, sizeof(char));
-		}
-		return (0);
-	}
-	else if (header.msg_type == MTYPE_STR)
-	{
-		char *buffer;
-		buffer = ft_calloc(header.content_length + 1, sizeof(char));
-		status = read(fd, buffer, header.content_length);
-		if (status == 0)
-			return (-1);
-		else if (status < 0)
-			return (-1);
-		else if (status < (ssize_t)header.content_length)
-			return (-1);
-		buffer[header.content_length] = '\0';
-		printf("Content: %s\n", buffer);
-		broadcast_message(srv, buffer, header.content_length);
-		free(buffer);
+		if (((struct s_connection *)node->data)->fd == fd)
+			return (node->data);
+		idx++;
+		node = node->next;
 	}
 	return (0);
+}
+
+int	handle_msg(struct s_server *srv, int fd)
+{
+	// First thing we need to do is get the connection
+	// from the cdll
+	struct s_connection *conn;
+
+	conn = get_connection(srv, fd);
+	if (!conn)
+	{
+		dprintf(STDERR_FILENO, "If you see this, something bad has happend\n");
+		// should not hit this case, but if we do we should probably remove the fd
+		// that caused the error from the epoll list
+		epoll_ctl(srv->epoll_fd, EPOLL_CTL_DEL, fd, 0);
+		return (-1);
+	}
+	if (handle_message(srv, conn) <= 0)
+	{
+		dprintf(STDERR_FILENO, "Failed to recieve a message from fd %d\n", fd);
+		// Should probably list out all the possible causes here
+		// but for now we should just disconnect the client.
+		handle_disconnect(srv, fd); // TODO: cleanup the disconnect, and make an overload that takes a connection
+		return (-1);
+	}
+	if (conn->msg_complete != 1)
+		return (0); // Just wait until more data is available on the socket
+	/*
+	Here we can either call the handler functions setup in the server
+	srv->handlers[conn->header.msg_type](); or something like that
+	*/
+	if (conn->header.msg_type == MTYPE_STR)
+	{
+		broadcast_message(srv, conn->content_buffer, conn->header.content_length);
+	}
+	else
+	{;}
+	free(conn->content_buffer);
+	conn->msg_complete = 0;
+	return (1);
 }

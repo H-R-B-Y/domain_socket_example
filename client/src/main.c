@@ -6,11 +6,13 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 18:19:57 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/03 19:50:35 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/05 10:54:34 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "client.h"
+
+t_vs32 g_signal_info = 0;
 
 void	terminate_client(struct s_client *cl, const char *msg, t_u8 stat)
 {
@@ -21,7 +23,7 @@ void	terminate_client(struct s_client *cl, const char *msg, t_u8 stat)
 		close(cl->server_fd);
 	if (cl->epoll_fd)
 		close(cl->epoll_fd);
-	exit(stat);
+	exit((int)stat);
 }
 
 # define CLINITFAIL dprintf(STDERR_FILENO, "Failed to init client: %s\n", strerror(errno))
@@ -84,6 +86,8 @@ void	main_loop(struct s_client *cl)
 	while (1)
 	{
 		count = epoll_wait(cl->epoll_fd, events, 64, -1); // add timeout
+		if (g_signal_info != 0)
+			terminate_client(cl, "Signal recieved\n", 1);
 		if (count < 0)
 		{
 			dprintf(STDERR_FILENO, "EPOLL: %s\n", strerror(errno));
@@ -175,7 +179,12 @@ void	main_loop(struct s_client *cl)
 int	main(void)
 {
 	struct s_client cl = {0};
+	struct sigaction handle = {0};
 
+	handle.sa_flags |= SA_SIGINFO;
+	handle.sa_flags |= SA_RESTART;
+	handle.sa_sigaction = signal_global_notifier;
+	sigaction(SIGPIPE, &handle, 0);
 	if (!socket_exists())
 	{
 		dprintf(STDERR_FILENO, "Unable to find server socket!\n");

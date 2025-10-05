@@ -24,6 +24,7 @@ SRCS			:= \
 				./src/handlers/new_connection.c \
 				./src/handlers/handle_msg.c \
 				./src/handlers/handle_disconnect.c \
+				./src/reading/stateful_reading.c \
 				\
 
 

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 10:58:12 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/04 10:59:04 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/05 00:58:52 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	main_loop(struct s_server *srv)
 				}
 				else
 				{
+					broadcast_message(srv, buff, ft_strlen(buff));
 					printf("SERVER: %s", buff);
 					free(buff);
 				}

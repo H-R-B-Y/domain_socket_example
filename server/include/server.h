@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 14:37:46 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/04 11:32:31 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/05 10:53:32 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,27 @@
 #  define SOCKET_PATH "/tmp/server_5790.sock"
 # endif
 
-extern t_vs32 g_signal_info;
 
-static inline void	signal_global_notifier(int signo, siginfo_t *info, void *context)
-{
-	(void)info;
-	(void)context;
-	g_signal_info = signo;
-}
+
 
 
 struct s_connection
 {
 	int	fd;
 	int	epoll_parent; // The fd associated with the reader of this fd
+
+	enum e_read_state
+	{
+		READ_STATE_PRECHUNK,
+		READ_STATE_HEADER,
+		READ_STATE_CONTENT,
+	}	read_state;
+	size_t	bytes_read;
+	size_t	bytes_expected;
+	int		prechunk;
+	struct s_header_chunk header;
+	char	*content_buffer;
+	int		msg_complete;
 };
 
 struct s_room
@@ -90,4 +97,8 @@ void	create_new_connection(struct s_server *srv);
 int	handle_msg(struct s_server *srv, int fd);
 int	handle_disconnect(struct s_server *srv, int fd);
 int	remove_connection_for_fd(struct s_server *srv, int fd);
+int	handle_message(struct s_server *srv, struct s_connection *conn);
+
+void	broadcast_message(struct s_server *srv, char *buffer, size_t size);
+
 #endif
