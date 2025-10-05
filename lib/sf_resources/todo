@@ -1,0 +1,5 @@
+
+implement server run
+test
+re-implement basic message server
+implement non blocking socket writes

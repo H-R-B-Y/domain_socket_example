@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 11:04:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/05 15:12:33 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/05 19:18:54 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ struct s_connection			*get_connection_by_fd(struct s_connection_lookup *lookup, 
  * when the connection is terminated and should only really be called by the server, as we need to ensure
  * the connection does not have references in other places.
  * This will free the connection and remove it from the lookup.
- * This will not free the user data, that is on the caller.
+ * This will only free the user data if the free function is set.
  * @param lookup The lookup to remove the connection from
  * @param id The id of the connection to remove
  * @param fd The fd of the connection to remove
