@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   partial_read.c                                     :+:      :+:    :+:   */
+/*   partial_write_free.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/05 11:12:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/06 14:29:32 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/10/06 14:23:58 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/10/06 14:24:44 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shared_resource.h"
 
-void	partial_read_init(struct s_partial_read *pr)
+void					partial_write_destroy(struct s_partial_write *pw)
 {
-	if (!pr)
+	if (!pw)
 		return ;
-	pr->buffer = 0;
-	pr->bytes_expected = sizeof(int);
-	pr->bytes_read = 0;
-	pr->state = PARTIAL_STATE_PRECHUNK;
-	pr->prechunk = 0;
-	pr->header = (struct s_header_chunk){0};
+	if (pw->buffer)
+		free(pw->buffer);
+	ft_memset(pw, 0, sizeof(struct s_partial_write));
 }
 
-void	partial_read_reset(struct s_partial_read *pr)
+void					free_partial_write(struct s_partial_write *pw)
 {
-	char	empty;
-	if (!pr)
+	if (!pw)
 		return ;
-	partial_read_init(pr);
+	partial_write_destroy(pw);
+	free(pw);
 }
+

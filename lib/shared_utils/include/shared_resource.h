@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 11:01:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/05 14:46:44 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/06 14:22:29 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,16 @@ int		make_fd_nonblocking(int fd);
 int		socket_exists(const char *socket_path);
 
 
-enum e_read_state
+enum e_partial_state
 {
-	READ_STATE_PRECHUNK,
-	READ_STATE_HEADER,
-	READ_STATE_CONTENT
+	PARTIAL_STATE_PRECHUNK,
+	PARTIAL_STATE_HEADER,
+	PARTIAL_STATE_CONTENT
 };
 
 struct s_partial_read
 {
-	enum e_read_state	state;
+	enum e_partial_state	state;
 	size_t				bytes_read;
 	size_t				bytes_expected;
 	int					prechunk;
@@ -79,6 +79,35 @@ struct s_partial_read
 void	partial_read_init(struct s_partial_read *pr);
 void	partial_read_reset(struct s_partial_read *pr);
 int		partial_read_process(struct s_partial_read *pr, int fd);
+
+struct s_partial_write
+{
+	enum e_partial_state	state;
+	size_t					bytes_written;
+	size_t					write_size;
+	int						prechunk;
+	struct s_header_chunk	header;
+	char					*buffer;
+	void					*next;
+};
+
+void					partial_write_init(struct s_partial_write *pw);
+struct s_partial_write	*partial_write_create(void);
+void					partial_write_reset(struct s_partial_write *pw);
+int						partial_write_process(struct s_partial_write *pw);
+void					partial_write_destroy(struct s_partial_write *pw);
+void					free_partial_write(struct s_partial_write *pw);
+
+/**
+ * @brief Pop an element from the front of the linked list, next element becomes the new head
+ * 
+ * Since partial writes are queued, we pop the first element returning it,
+ * and the next element becomes the new head of the list.
+ * 
+ * @param pw Pointer to the head of the linked list
+ * @return struct s_partial_write* previous head of the list
+ */
+struct s_partial_write *pop_partial_write(struct s_partial_write **pw);
 
 int		send_message(int fd, enum e_message_types type, const char *content, size_t length);
 

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 00:16:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/05 00:55:55 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/06 14:22:29 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int handle_prechunk(struct s_server *srv, struct s_connection *conn, ssiz
 	conn->bytes_read += (*status);
 	if (conn->bytes_read >= PRE_HEADER_CHUNK)
 	{
-		conn->read_state = READ_STATE_HEADER;
+		conn->read_state = PARTIAL_STATE_HEADER;
 		conn->bytes_read = 0;
 	}
 	return (1);
@@ -46,7 +46,7 @@ static int	handle_header(struct s_server *srv, struct s_connection *conn, ssize_
 	conn->bytes_read += (*status);
 	if (conn->bytes_read >= HEADER_CHUNK)
 	{
-		conn->read_state = READ_STATE_CONTENT;
+		conn->read_state = PARTIAL_STATE_CONTENT;
 		conn->bytes_expected = conn->header.content_length;
 		conn->bytes_read = 0;
 		/*
@@ -72,7 +72,7 @@ static int	handle_message_content(struct s_server *srv, struct s_connection *con
 	conn->bytes_read += (*status);
 	if (conn->bytes_read >= conn->bytes_expected)
 	{
-		conn->read_state = READ_STATE_PRECHUNK;
+		conn->read_state = PARTIAL_STATE_PRECHUNK;
 		conn->bytes_read = 0;
 		conn->bytes_expected = 0;
 		conn->msg_complete = 1;
@@ -86,17 +86,17 @@ int	handle_message(struct s_server *srv, struct s_connection *conn)
 
 	switch (conn->read_state)
 	{
-		case READ_STATE_PRECHUNK:
+		case PARTIAL_STATE_PRECHUNK:
 			if (handle_prechunk(srv, conn, &status) < 1)
 				return (0); // This is a failed read state
 			break ;
 		
-		case READ_STATE_HEADER:
+		case PARTIAL_STATE_HEADER:
 			if (handle_header(srv, conn, &status) < 1)
 				return (0);
 			break ;
 		
-		case READ_STATE_CONTENT:
+		case PARTIAL_STATE_CONTENT:
 			if (handle_message_content(srv, conn, &status) < 1)
 				return (0);
 			break ;

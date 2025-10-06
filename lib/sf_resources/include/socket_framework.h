@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 11:04:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/05 19:18:54 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/06 14:34:58 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ struct s_connection
 
 	/// @brief Partial read data
 	struct s_partial_read	read_state;
+	/// @brief Partial write data queue, allocated linked list of partial writes
+	struct s_partial_write	*write_queue_head;
 	/// @brief When connection was made
 	time_t					connected_at;
 	/// @brief Data specific to implementation

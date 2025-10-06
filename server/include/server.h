@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 14:37:46 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/05 10:53:32 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/06 14:22:29 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,11 @@ struct s_connection
 	int	fd;
 	int	epoll_parent; // The fd associated with the reader of this fd
 
-	enum e_read_state
+	enum e_partial_state
 	{
-		READ_STATE_PRECHUNK,
-		READ_STATE_HEADER,
-		READ_STATE_CONTENT,
+		PARTIAL_STATE_PRECHUNK,
+		PARTIAL_STATE_HEADER,
+		PARTIAL_STATE_CONTENT,
 	}	read_state;
 	size_t	bytes_read;
 	size_t	bytes_expected;
