@@ -3,6 +3,7 @@
 		"libft.h": "c",
 		"unistd.h": "c",
 		"epoll.h": "c",
-		"socket.h": "c"
+		"socket.h": "c",
+		"sock_internal.h": "c"
 	}
 }

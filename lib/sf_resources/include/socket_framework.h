@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 11:04:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/06 14:34:58 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/08 14:18:27 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,7 @@ struct s_server;
 typedef int		(*t_on_connect_fn)(struct s_server *srv, struct s_connection *conn, void *appdata);
 typedef int		(*t_on_message_fn)(struct s_server *srv, struct s_message *message, void *appdata);
 typedef void	(*t_on_disconnect_fn)(struct s_server *srv, struct s_connection *conn, void *appdata);
+
 /*
 How do we handle disconnects from rooms (threads)
 need to think about this:

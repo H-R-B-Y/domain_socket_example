@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 14:25:49 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/06 14:33:44 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/08 15:02:45 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int handle_content(int fd, struct s_partial_write *pw, ssize_t *status)
 	return (0);
 }
 
-int	partial_write_process(struct s_partial_write *pw)
+int	partial_write_process(struct s_partial_write *pw, int fd)
 {
 	ssize_t	status;
 	int		code;

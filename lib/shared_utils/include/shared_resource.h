@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 11:01:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/06 14:22:29 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/08 15:02:36 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ struct s_partial_write
 void					partial_write_init(struct s_partial_write *pw);
 struct s_partial_write	*partial_write_create(void);
 void					partial_write_reset(struct s_partial_write *pw);
-int						partial_write_process(struct s_partial_write *pw);
+int						partial_write_process(struct s_partial_write *pw, int fd);
 void					partial_write_destroy(struct s_partial_write *pw);
 void					free_partial_write(struct s_partial_write *pw);
 
