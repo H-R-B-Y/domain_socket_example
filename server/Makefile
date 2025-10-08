@@ -6,25 +6,33 @@ CFLAGS			:= -Wextra -Wall -Werror -g3 -O0
 
 MAKEFLAGS		+= --no-print-directory
 
-LIBFLAGS		:= -L./lib/ -lft
+LIBFLAGS		:= -L../lib/sf_resources/ \
+					-L../lib/shared_utils/ \
+					-L./lib/ -L./lib/libft \
+					-lsf_server \
+					-lsf_shared \
+					-lft \
+					\
 
-INCLUDES		:= -I$(abspath ./include) -I$(abspath ./lib/libft/include) -I$(abspath ../include)
+INCLUDES		:= -I$(abspath ./include) -I$(abspath ./lib/libft/include) -I$(abspath ../include) \
+					-I$(abspath ../lib/shared_utils/include) \
+					-I$(abspath ../lib/sf_resources/include)
 
 LIB_DIR			:= ./lib
 
 LIBFT_DIR		:= $(abspath $(LIB_DIR)/libft)
 LIBFT			:= $(LIBFT_DIR)/libft.a
 
+SFSHARED_DIR	:= $(abspath ../lib/shared_utils)
+SFSHARED		:= $(SFSHARED_DIR)/libsf_shared.a
+
+SFDSERVER_DIR	:= $(abspath ../lib/sf_resources)
+SFDSERVER		:= $(SFDSERVER_DIR)/libsf_server.a
+
+
 SRC_DIR			:= ./src
 
 SRCS			:= \
-				./src/main_loop.c \
-				./src/server/terminations.c \
-				./src/server/init.c \
-				./src/handlers/new_connection.c \
-				./src/handlers/handle_msg.c \
-				./src/handlers/handle_disconnect.c \
-				./src/reading/stateful_reading.c \
 				\
 
 
@@ -39,12 +47,17 @@ MAIN			:= $(SRC_DIR)/main.c
 
 all: $(NAME)
 
-$(NAME): $(MAIN) $(LIBFT) $(OBJS) 
+$(NAME): $(MAIN) $(LIBFT) $(OBJS) $(SFSHARED) $(SFDSERVER)
 		$(CC) $(CFLAGS) $(INCLUDES) $(MAIN) $(OBJS) $(LIBFLAGS) -o $(NAME)
 
 $(LIBFT):
 		@$(MAKE) --directory $(LIBFT_DIR) CFLAGS="$(CFLAGS)" CC=$(CC) INCLUDES=$(INCLUDES)
-		cp $(LIBFT) $(LIB_DIR)
+
+$(SFSHARED):
+		@$(MAKE) --directory $(SFSHARED_DIR) CFLAGS="$(CFLAGS)" CC=$(CC)
+
+$(SFDSERVER):
+		@$(MAKE) --directory $(SFDSERVER_DIR) CFLAGS="$(CFLAGS)" CC=$(CC)
 
 %.o: %.c
 		@$(CC) $(CFLAGS) -o $@ -c $< $(INCLUDES)
@@ -59,6 +72,8 @@ clean:
 
 rm:
 		@$(MAKE) --directory $(LIBFT_DIR) fclean
+		@$(MAKE) --directory $(SFSHARED_DIR) fclean
+		@$(MAKE) --directory $(SFDSERVER_DIR) fclean
 		@rm -rf $(NAME)
 		@rm -rf $(LIB_DIR)/libft.a $(LIB_DIR)/libmlx.a $(LIB_DIR)/libmlxwrap.a $(LIB_DIR)/*.a
 
