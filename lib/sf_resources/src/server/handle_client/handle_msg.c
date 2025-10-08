@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 14:27:42 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/08 14:58:58 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/08 16:44:28 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	_handle_msg(struct s_server *srv, struct s_connection *conn)
 			return (-1);
 			break ;
 	}
+	return (1);
 }
 
 

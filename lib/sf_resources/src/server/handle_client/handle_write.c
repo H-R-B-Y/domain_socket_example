@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 14:31:37 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/08 15:16:19 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/08 16:43:13 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 int	_handle_write(struct s_server *srv, struct s_connection *conn)
 {
 	int						status;
-	struct s_partial_write	pw;
-	
+
 	if (!srv || !conn)
 		return (1);
 	/*
@@ -52,4 +51,5 @@ int	_handle_write(struct s_server *srv, struct s_connection *conn)
 			return (-1);
 			break ;
 	}
+	return (1);
 }

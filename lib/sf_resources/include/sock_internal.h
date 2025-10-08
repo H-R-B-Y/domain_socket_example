@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 11:29:23 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/08 14:37:31 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/08 16:44:17 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include "shared_resource.h"
 # include "socket_framework.h"
+
+# include <time.h>
 
 
 void	_terminate_srv(struct s_server *srv, const char *msg, int exit_code, int show_errno);

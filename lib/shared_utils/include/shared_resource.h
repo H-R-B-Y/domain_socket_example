@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 11:01:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/08 15:02:36 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/08 17:12:54 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void					partial_write_reset(struct s_partial_write *pw);
 int						partial_write_process(struct s_partial_write *pw, int fd);
 void					partial_write_destroy(struct s_partial_write *pw);
 void					free_partial_write(struct s_partial_write *pw);
+void					partial_write_clear_list(struct s_partial_write **head);
 
 /**
  * @brief Pop an element from the front of the linked list, next element becomes the new head

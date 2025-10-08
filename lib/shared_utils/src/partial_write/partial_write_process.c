@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 14:25:49 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/08 15:02:45 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/08 16:44:19 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,17 +81,19 @@ int	partial_write_process(struct s_partial_write *pw, int fd)
 	switch (pw->state)
 	{
 		case PARTIAL_STATE_PRECHUNK:
-			code = handle_prechunk(-1, pw, &status);
+			code = handle_prechunk(fd, pw, &status);
 			if (code <= 0)
 				return (code);
 		// fallthrough
 		case PARTIAL_STATE_HEADER:
-			code = handle_header(-1, pw, &status);
+			code = handle_header(fd, pw, &status);
 			if (code <= 0)
 				return (code);
 		// fallthrough
 		case PARTIAL_STATE_CONTENT:
-			return (handle_content(-1, pw, &status));
+			return (handle_content(fd, pw, &status));
 		default:
 			return (-1);
 	}
+	return (-1);
+}

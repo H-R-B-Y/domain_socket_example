@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 14:36:25 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/06 14:37:44 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/08 17:18:19 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,16 @@ int						push_partial_write(struct s_partial_write **head,
 		current = current->next;
 	current->next = new_pw;
 	return (0);
+}
+
+void	partial_write_clear_list(struct s_partial_write **head)
+{
+	if (!head || !*head)
+		return ;
+	if ((*head)->next)
+		partial_write_clear_list(
+			(struct s_partial_write **)(&((*head)->next))
+		);
+	partial_write_destroy(*head);
+	(*head) = 0;
 }

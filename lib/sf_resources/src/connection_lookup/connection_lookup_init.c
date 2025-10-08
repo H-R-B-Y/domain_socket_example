@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 15:04:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/05 15:11:23 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/08 16:45:43 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	connection_lookup_init(struct s_connection_lookup *lookup)
 		free(lookup->id_to_connection.pairs);
 		return (0);
 	}
-	lookup->available_ids = init_heap(1024, sizeof(t_connection_id), _heap_compare_ids);
+	lookup->available_ids = init_heap(1024, sizeof(t_connection_id), (void *)_heap_compare_ids);
 	if (!lookup->available_ids.heap)
 	{
 		free(lookup->id_to_connection.pairs);

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 11:12:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/08 14:58:36 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/08 16:40:07 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	partial_read_init(struct s_partial_read *pr)
 
 void	partial_read_reset(struct s_partial_read *pr)
 {
-	char	empty;
 	if (!pr)
 		return ;
 	if (pr->buffer)

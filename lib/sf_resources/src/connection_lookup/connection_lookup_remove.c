@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 19:08:14 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/05 19:18:52 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/08 16:45:27 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ int							connection_remove_by_ref(struct s_connection_lookup *lookup, struct s_
 	hm_remove_pair(&lookup->id_to_connection, &conn->id);
 	hm_remove_pair(&lookup->fd_to_connection, &conn->fd);
 	// Add the id back to the available ids heap
-	heap_push(&lookup->available_ids, &conn->id);
+	heap_insert(&lookup->available_ids, &conn->id);
 	// Remove from the connections list
-	node = cdll_find(&lookup->connections, conn, &compare_connection_ptrs);
-	cdll_remove_node(&lookup->connections, node, delete_connection);
+	node = cdll_find(&lookup->connections, conn, (void *)&compare_connection_ptrs);
+	cdll_remove_node(&lookup->connections, node, (t_freefn)&delete_connection);
 	delete_connection(conn);
 	return (1);
 }
