@@ -6,11 +6,11 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 15:15:31 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/05 15:21:44 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/09 17:59:09 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sock_internal.h"
+#include "sock_server_int.h"
 
 t_connection_id connection_add(struct s_connection_lookup *lookup, struct s_connection *conn)
 {

@@ -1,26 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.h                                           :+:      :+:    :+:   */
+/*   handle_stdin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/08 16:31:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/09 17:59:44 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/10/10 16:40:53 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/10/10 16:56:57 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SERVER_H
-# define SERVER_H
+#include "sock_client_int.h"
 
-# include "shared_resource.h"
-# include "sock_server_framework.h"
-
-# define FT_INCLUDE_ALL
-# include "libft.h"
-
-# include <unistd.h>
-
-
-
-#endif
+int	_handle_stdin(struct s_client *client)
+{
+	if (!client)
+		return (1);
+	if (client->on_stdin && !client->on_stdin(client, client->appdata))
+		return (-1);
+	return (0);
+}

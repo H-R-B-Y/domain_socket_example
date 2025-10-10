@@ -6,11 +6,11 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 15:03:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/08 17:13:18 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/09 17:59:09 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sock_internal.h"
+#include "sock_server_int.h"
 
 void	delete_connection(struct s_connection *conn)
 {

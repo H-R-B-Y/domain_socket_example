@@ -6,11 +6,11 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 14:34:29 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/08 14:53:05 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/09 17:59:09 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sock_internal.h"
+#include "sock_server_int.h"
 
 int	_on_join_handler(struct s_server *srv, int fd)
 {

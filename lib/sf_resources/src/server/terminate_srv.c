@@ -6,11 +6,11 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 16:56:32 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/08 16:59:29 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/10 13:54:50 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sock_internal.h"
+#include "sock_server_int.h"
 
 void	_terminate_srv(struct s_server *srv,\
 	const char *msg,
@@ -24,6 +24,9 @@ void	_terminate_srv(struct s_server *srv,\
 		dprintf(STDERR_FILENO, "Server terminating with errno %s\nReason: %s\n", strerror(errno), msg);
 	else
 		dprintf(STDERR_FILENO, "Server terminating: %s\n", msg);
+	// Not sure if this is a good idea because termiante is internal
+	if (srv->appdata && srv->free_appdata)
+		srv->free_appdata(srv->appdata);
 	// Cleanup connections in room
 	cdll_destroy(&srv->server_room, NULL); // No need to free connection here
 	// Close all connections

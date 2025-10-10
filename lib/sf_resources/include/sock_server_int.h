@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sock_internal.h                                    :+:      :+:    :+:   */
+/*   sock_server_int.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,13 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SOCK_INTERNAL_H
-# define SOCK_INTERNAL_H
+#ifndef SOCK_SERVER_INT_H
+# define SOCK_SERVER_INT_H
 
 # include "shared_resource.h"
-# include "socket_framework.h"
-
-# include <time.h>
+# include "sock_server_framework.h"
 
 
 void	_terminate_srv(struct s_server *srv, const char *msg, int exit_code, int show_errno);

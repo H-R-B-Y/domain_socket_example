@@ -7,7 +7,8 @@
 				"${workspaceFolder}/include",
                 "${workspaceFolder}/server/include",
                 "${workspaceFolder}/client/include",
-				"${workspaceFolder}/lib/libft_extended/include"
+				"${workspaceFolder}/lib/libft_extended/include",
+				"${workspaceFolder}/lib/sf_resources/include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

@@ -6,11 +6,11 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 14:53:52 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/05 14:59:34 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/09 17:59:09 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sock_internal.h"
+#include "sock_server_int.h"
 
 /*
 Note to self:

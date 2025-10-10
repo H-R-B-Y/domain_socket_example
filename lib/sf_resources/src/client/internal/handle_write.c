@@ -5,47 +5,41 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/08 14:31:37 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/10 15:30:21 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/10/10 14:09:47 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/10/10 17:10:32 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sock_server_int.h"
+#include "sock_client_int.h"
 
-int	_handle_write(struct s_server *srv, struct s_connection *conn)
+int _handle_client_msg_send(struct s_client *client)
 {
-	int						status;
+	int	status;
 
-	if (!srv || !conn)
+	if (!client)
 		return (1);
-	/*
-	Check if there is data queued
-	if not remove the write check from the epoll event.
-	*/
-	if (!conn->write_queue_head)
+	if (!client->partial_write_head)
 	{
-		// should really make this a function
 		struct epoll_event	ev;
-		ev.data.fd = conn->fd;
+		ev.data.fd = client->server_fd;
 		ev.events = EPOLLIN;
-		if (epoll_ctl(conn->epoll_parent, EPOLL_CTL_MOD, conn->fd, &ev) < 0)
-			return (-1);
+		epoll_ctl(client->epoll_fd, EPOLL_CTL_MOD, client->server_fd, &ev);
+		return (0);
 	}
-	status = partial_write_process(conn->write_queue_head, conn->fd);
+	status = partial_write_process(client->partial_write_head, client->server_fd);
 	switch (status)
 	{
-		case 0:
-		case -1:
+		case (0):
+		case (-1):
 			return (status);
-		case 1:
-			// message has been written completely
-			partial_write_destroy(pop_partial_write(&conn->write_queue_head));
-			if (!conn->write_queue_head)
+		case (1):
+			partial_write_destroy(pop_partial_write(&client->partial_write_head));
+			if (!client->partial_write_head)
 			{
 				struct epoll_event	ev;
-				ev.data.fd = conn->fd;
+				ev.data.fd = client->server_fd;
 				ev.events = EPOLLIN;
-				epoll_ctl(srv->epoll_fd, EPOLL_CTL_MOD, conn->fd, &ev);
+				epoll_ctl(client->epoll_fd, EPOLL_CTL_MOD, client->server_fd, &ev);
 			}
 			return (0);
 	}

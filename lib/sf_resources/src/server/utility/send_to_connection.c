@@ -6,11 +6,11 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 19:20:59 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/05 19:22:42 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/09 17:59:09 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sock_internal.h"
+#include "sock_server_int.h"
 
 int	server_send_to_connection(
 	struct s_server *srv,

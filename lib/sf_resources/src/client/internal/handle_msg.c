@@ -5,43 +5,46 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/08 14:27:42 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/10 15:24:28 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/10/10 14:08:47 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/10/10 15:31:23 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sock_server_int.h"
+#include "sock_client_int.h"
 
-int	_handle_msg(struct s_server *srv, struct s_connection *conn)
+/*
+Do partial read, need to return 
+0 = OK
+-1 = check errno
+1 = internal error
+
+The fd is going to be the server fd
+*/
+int	_handle_client_msg_recv(struct s_client *client)
 {
-	int					status;
-	struct s_message	msg;
+	int	status;
 
-	if (!srv || !conn)
+	if (!client)
 		return (1);
-	status = partial_read_process(&conn->read_state, conn->fd);
+	status = partial_read_process(&client->read_state, client->server_fd);
 	switch (status)
 	{
 		case 0:
-			return (0);
-			break ;
-		case 1:
-			// we need some way to pop the message from the client into a message struct
-			msg = (struct s_message){0};
-			msg.sender = conn;
-			msg.header = &conn->read_state.header;
-			msg.content = conn->read_state.buffer;
-			msg.recv_at = time(NULL);
-			if (srv->on_message)
-				srv->on_message(srv, &msg, srv->appdata);
-			partial_read_reset(&conn->read_state);
-			return (0);
-			break ;
 		case -1:
-			return (-1);
-			break ;
+			return (status);
+		case 1:
+			/*
+			Do something with the message
+			*/
+			if (client->on_msg)
+			{
+				if (!client->on_msg(client, client->read_state.prechunk,
+						&client->read_state.header, client->read_state.buffer, client->appdata))
+					return (1);
+			}
+			partial_read_reset(&client->read_state);
+			return (0);
 	}
+	// Internal issue if no case was triggered
 	return (1);
 }
-
-

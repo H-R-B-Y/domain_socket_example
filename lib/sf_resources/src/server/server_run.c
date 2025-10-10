@@ -6,11 +6,11 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 14:53:31 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/08 14:44:35 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/10 15:54:35 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sock_internal.h"
+#include "sock_server_int.h"
 
 /**
  * @brief Run the server main loop
@@ -33,7 +33,7 @@ void	server_run(struct s_server *srv)
 		{
 			printf("EPOLL: error code: %s\n", strerror(errno));
 			if (errno != EAGAIN && errno != EWOULDBLOCK)
-				srv->running = 0;
+				server_stop(srv);
 		}
 		else if (status == 0)
 			continue ;
@@ -115,6 +115,7 @@ void	server_run(struct s_server *srv)
 							break ;
 					}
 				}
+				// TODO: move all the error prints to stdout
 				if (!(ev[idx].events & EPOLLOUT) && !(ev[idx].events & EPOLLIN))
 				{
 					switch (_handle_disconnect(srv, conn))

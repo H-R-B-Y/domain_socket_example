@@ -1,26 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.h                                           :+:      :+:    :+:   */
+/*   sock_client_int.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/08 16:31:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/09 17:59:44 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/10/09 18:02:51 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/10/10 16:32:49 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SERVER_H
-# define SERVER_H
+#ifndef SOCK_CLIENT_INT_H
+# define SOCK_CLIENT_INT_H
 
 # include "shared_resource.h"
-# include "sock_server_framework.h"
+# include "sock_client_framework.h"
 
-# define FT_INCLUDE_ALL
-# include "libft.h"
+void	_terminate_client(struct s_client *client, const char *msg, int exit_code, int show_errno);
 
-# include <unistd.h>
+int		_on_connect(struct s_client *client);
 
+int		_handle_client_msg_recv(struct s_client *client);
 
+int		_handle_client_msg_send(struct s_client *client);
+
+int		_handle_stdin(struct s_client *client);
 
 #endif

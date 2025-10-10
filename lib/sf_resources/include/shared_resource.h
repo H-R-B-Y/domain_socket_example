@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 11:01:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/08 17:12:54 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/10 16:29:30 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 # include <sys/epoll.h>
 # include <sys/stat.h>
 # include <sys/un.h>
+# include <time.h>
 
 # define FT_INCLUDE_ALL
 # include "libft.h"
@@ -69,15 +70,27 @@ enum e_partial_state
 struct s_partial_read
 {
 	enum e_partial_state	state;
-	size_t				bytes_read;
-	size_t				bytes_expected;
-	int					prechunk;
+	size_t					bytes_read;
+	size_t					bytes_expected;
+	int						prechunk;
 	struct s_header_chunk	header;
-	char				*buffer;
+	char					*buffer;
 };
 
 void	partial_read_init(struct s_partial_read *pr);
 void	partial_read_reset(struct s_partial_read *pr);
+
+/**
+ * @brief Process a partial read, will read into the pr struct
+ * 
+ * @param pr The parital read struct to store the data
+ * @param fd The file desc to read from
+ * @return int:
+ * 1 if the read data is ready
+ * 0 if the read was partial
+ * -1 if the read failed or an error occured
+ * 
+ */
 int		partial_read_process(struct s_partial_read *pr, int fd);
 
 struct s_partial_write
@@ -98,7 +111,8 @@ int						partial_write_process(struct s_partial_write *pw, int fd);
 void					partial_write_destroy(struct s_partial_write *pw);
 void					free_partial_write(struct s_partial_write *pw);
 void					partial_write_clear_list(struct s_partial_write **head);
-
+int						push_partial_write(struct s_partial_write **head,
+							struct s_partial_write *new_pw);
 /**
  * @brief Pop an element from the front of the linked list, next element becomes the new head
  * 

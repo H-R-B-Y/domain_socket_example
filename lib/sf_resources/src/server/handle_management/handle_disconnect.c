@@ -6,11 +6,11 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 17:06:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/08 17:19:47 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/09 17:59:09 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "sock_internal.h"
+# include "sock_server_int.h"
 
 static int	cmp_conn(void *conn1, void *conn2)
 {

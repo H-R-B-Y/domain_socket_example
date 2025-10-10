@@ -4,6 +4,7 @@
 		"unistd.h": "c",
 		"epoll.h": "c",
 		"socket.h": "c",
-		"sock_internal.h": "c"
+		"sock_server_int.h": "c",
+		"sock_server_framework.h": "c"
 	}
 }

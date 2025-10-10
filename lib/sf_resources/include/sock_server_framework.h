@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   socket_framework.h                                 :+:      :+:    :+:   */
+/*   sock_server_framework.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SOCKET_FRAMEWORK_H
-# define SOCKET_FRAMEWORK_H
+#ifndef SOCK_SERVER_FRAMEWORK_H
+# define SOCK_SERVER_FRAMEWORK_H
 
 #include "shared_resource.h"
 
@@ -151,8 +151,23 @@ The server generic
 // Forward decleration=
 struct s_server;
 
+/*
+Ran on initial connection to the server.
+Return 1 if everything is ok
+Return 0 if there was an error (server will cleanup)
+*/
 typedef int		(*t_on_connect_fn)(struct s_server *srv, struct s_connection *conn, void *appdata);
+
+/*
+Ran on when a full message has been read from the server
+Return 1 if everything is ok
+Return 0 if there was an error (server will cleanup)
+*/
 typedef int		(*t_on_message_fn)(struct s_server *srv, struct s_message *message, void *appdata);
+
+/*
+Ran when client has been disconnnected from the server (for any reason)
+*/
 typedef void	(*t_on_disconnect_fn)(struct s_server *srv, struct s_connection *conn, void *appdata);
 
 /*

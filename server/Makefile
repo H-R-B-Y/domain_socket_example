@@ -10,21 +10,16 @@ LIBFLAGS		:= -L../lib/sf_resources/ \
 					-L../lib/shared_utils/ \
 					-L./lib/ -L./lib/libft \
 					-lsf_server \
-					-lsf_shared \
 					-lft \
 					\
 
 INCLUDES		:= -I$(abspath ./include) -I$(abspath ./lib/libft/include) -I$(abspath ../include) \
-					-I$(abspath ../lib/shared_utils/include) \
 					-I$(abspath ../lib/sf_resources/include)
 
 LIB_DIR			:= ./lib
 
 LIBFT_DIR		:= $(abspath $(LIB_DIR)/libft)
 LIBFT			:= $(LIBFT_DIR)/libft.a
-
-SFSHARED_DIR	:= $(abspath ../lib/shared_utils)
-SFSHARED		:= $(SFSHARED_DIR)/libsf_shared.a
 
 SFDSERVER_DIR	:= $(abspath ../lib/sf_resources)
 SFDSERVER		:= $(SFDSERVER_DIR)/libsf_server.a
@@ -47,14 +42,11 @@ MAIN			:= $(SRC_DIR)/main.c
 
 all: $(NAME)
 
-$(NAME): $(MAIN) $(LIBFT) $(OBJS) $(SFSHARED) $(SFDSERVER)
+$(NAME): $(MAIN) $(LIBFT) $(OBJS) $(SFDSERVER)
 		$(CC) $(CFLAGS) $(INCLUDES) $(MAIN) $(OBJS) $(LIBFLAGS) -o $(NAME)
 
 $(LIBFT):
 		@$(MAKE) --directory $(LIBFT_DIR) CFLAGS="$(CFLAGS)" CC=$(CC) INCLUDES=$(INCLUDES)
-
-$(SFSHARED):
-		@$(MAKE) --directory $(SFSHARED_DIR) CFLAGS="$(CFLAGS)" CC=$(CC)
 
 $(SFDSERVER):
 		@$(MAKE) --directory $(SFDSERVER_DIR) CFLAGS="$(CFLAGS)" CC=$(CC)

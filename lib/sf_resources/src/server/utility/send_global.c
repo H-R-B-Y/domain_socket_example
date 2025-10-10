@@ -6,11 +6,11 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 19:34:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/05 23:17:21 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/09 18:01:33 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sock_internal.h"
+#include "sock_server_int.h"
 
 /*
 Again, really really bad implementation, 

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 18:19:57 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/05 10:54:34 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/10 13:41:23 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	init_client(struct s_client *cl)
 	struct sockaddr_un	addr;
 	addr = (struct sockaddr_un){0};
 	addr.sun_family = AF_UNIX;
-	ft_memcpy(addr.sun_path, SOCKET_PATH, sizeof(addr.sun_path));
+	ft_memmove(addr.sun_path, SOCKET_PATH, sizeof(addr.sun_path));
 	if (connect(cl->server_fd, (struct sockaddr *)&addr, sizeof(addr)) < 0)
 	{
 		CLINITFAIL;

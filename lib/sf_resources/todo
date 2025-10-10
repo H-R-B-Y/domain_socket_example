@@ -1,8 +1,5 @@
 
-implement server run
 test
-re-implement basic message server
-implement non blocking socket writes
 
 consolidate the message struct so that it can be used for both reading and writing, 
 this way we can create a single message struct and send it to multiple clients.

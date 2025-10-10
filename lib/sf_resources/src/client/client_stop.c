@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   connection_lookup_get.c                            :+:      :+:    :+:   */
+/*   client_stop.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/05 15:22:00 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/05 19:06:52 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/10/10 14:04:02 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/10/10 17:13:36 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sock_internal.h"
+#include "sock_client_int.h"
 
-struct s_connection			*get_connection_by_id(struct s_connection_lookup *lookup, t_connection_id id)
+void	client_stop(struct s_client *client)
 {
-	if (!lookup || id == 0)
-		return (0);
-	return (hm_get_value(&lookup->id_to_connection, &id));
-}
-
-struct s_connection			*get_connection_by_fd(struct s_connection_lookup *lookup, int fd)
-{
-	if (!lookup || fd < 0)
-		return (0);
-	return (hm_get_value(&lookup->fd_to_connection, &fd));
+	if (!client)
+		return ;
+	if (!client->connected)
+	{
+		dprintf(STDERR_FILENO, "Unable to stop client that is not connected");
+		return ;
+	}
+	client->connected = 0;
+	return ;
 }
