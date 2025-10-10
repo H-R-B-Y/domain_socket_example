@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 16:35:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/10 17:11:29 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/10 18:30:48 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	client_connect(struct s_client *client)
 		if (client->server_fd < 0)
 			return (-1);
 	}
-	if (connect(client->server_fd, (struct sockaddr *)&client->addr, 1024) < 0)
+	if (connect(client->server_fd, (struct sockaddr *)&client->addr, sizeof(client->addr)) < 0)
 		return (-1);
 	struct epoll_event	ev;
 	ev.data.fd = client->server_fd;

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 18:02:57 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/10 16:56:15 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/10 18:18:48 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef int (*t_on_client_stdin)(
 	void *appdata
 );
 
-typedef int		(*t_loop_hook)(
+typedef int	(*t_loop_hook)(
 	struct s_client *client,
 	void *appdata
 );

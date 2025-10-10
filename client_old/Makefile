@@ -6,24 +6,14 @@ CFLAGS			:= -Wextra -Wall -Werror -g3 -O0
 
 MAKEFLAGS		+= --no-print-directory
 
-LIBFLAGS		:= -L../lib/sf_resources/ \
-					-L../lib/shared_utils/ \
-					-L./lib/ -L./lib/libft \
-					-lsf_client \
-					-lft \
-					\
+LIBFLAGS		:= -L./lib/ -lft
 
-INCLUDES		:= -I$(abspath ./include) -I$(abspath ./lib/libft/include) -I$(abspath ../include) \
-					-I$(abspath ../lib/sf_resources/include)
+INCLUDES		:= -I$(abspath ./include) -I$(abspath ./lib/libft/include) -I$(abspath ../include)
 
 LIB_DIR			:= ./lib
 
 LIBFT_DIR		:= $(abspath $(LIB_DIR)/libft)
 LIBFT			:= $(LIBFT_DIR)/libft.a
-
-SFDCLIENT_DIR	:= $(abspath ../lib/sf_resources)
-SFDCLIENT		:= $(SFDCLIENT_DIR)/libsf_client.a
-
 
 SRC_DIR			:= ./src
 
@@ -42,14 +32,12 @@ MAIN			:= $(SRC_DIR)/main.c
 
 all: $(NAME)
 
-$(NAME): $(MAIN) $(LIBFT) $(OBJS) $(SFDCLIENT)
+$(NAME): $(MAIN) $(LIBFT) $(OBJS) 
 		$(CC) $(CFLAGS) $(INCLUDES) $(MAIN) $(OBJS) $(LIBFLAGS) -o $(NAME)
 
 $(LIBFT):
 		@$(MAKE) --directory $(LIBFT_DIR) CFLAGS="$(CFLAGS)" CC=$(CC) INCLUDES=$(INCLUDES)
-
-$(SFDCLIENT):
-		@$(MAKE) --directory $(SFDCLIENT_DIR) CFLAGS="$(CFLAGS)" CC=$(CC)
+		cp $(LIBFT) $(LIB_DIR)
 
 %.o: %.c
 		@$(CC) $(CFLAGS) -o $@ -c $< $(INCLUDES)
@@ -64,7 +52,6 @@ clean:
 
 rm:
 		@$(MAKE) --directory $(LIBFT_DIR) fclean
-		@$(MAKE) --directory $(SFDCLIENT_DIR) fclean
 		@rm -rf $(NAME)
 		@rm -rf $(LIB_DIR)/libft.a $(LIB_DIR)/libmlx.a $(LIB_DIR)/libmlxwrap.a $(LIB_DIR)/*.a
 

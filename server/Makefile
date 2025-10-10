@@ -64,7 +64,6 @@ clean:
 
 rm:
 		@$(MAKE) --directory $(LIBFT_DIR) fclean
-		@$(MAKE) --directory $(SFSHARED_DIR) fclean
 		@$(MAKE) --directory $(SFDSERVER_DIR) fclean
 		@rm -rf $(NAME)
 		@rm -rf $(LIB_DIR)/libft.a $(LIB_DIR)/libmlx.a $(LIB_DIR)/libmlxwrap.a $(LIB_DIR)/*.a

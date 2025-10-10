@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 15:34:48 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/10 17:12:34 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/10 18:24:53 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,8 @@ int	client_run(struct s_client *client)
 		return (0);
 	if (!client->connected)
 	{
-		// Do the connect call here
+		if (client_connect(client) != 0)
+			client_stop(client);
 		_on_connect(client);
 	}
 	while (client->connected)

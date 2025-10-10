@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 13:37:42 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/10 16:34:21 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/10 18:31:54 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ static int	init_epoll(struct s_client *client)
 	if (client->epoll_fd < 0)
 		TERMINATE("Unable to create epoll fd", 1);
 	ev.events = EPOLLIN;
-	ev.data.fd = client->server_fd;
-	if (epoll_ctl(client->epoll_fd, EPOLL_CTL_ADD, client->server_fd, &ev) < 0)
-		TERMINATE("Unable to add server to epoll", 1);
+	// ev.data.fd = client->server_fd;
+	// if (epoll_ctl(client->epoll_fd, EPOLL_CTL_ADD, client->server_fd, &ev) < 0)
+	// 	TERMINATE("Unable to add server to epoll", 1);
 	if (!make_fd_nonblocking(STDIN_FILENO))
 		TERMINATE("Unable to make stdin non-blocking", 1);
 	ev.data.fd = STDIN_FILENO;
@@ -50,6 +50,7 @@ static int	init_epoll(struct s_client *client)
 
 int client_init(struct s_client *client, const char *sock_path)
 {
+	ft_bzero(client, sizeof(*client));
 	if (!init_socket(client, sock_path))
 		return (0);
 	if (!init_epoll(client))
