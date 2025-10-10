@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 14:53:31 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/10 18:39:15 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/10 19:15:58 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,24 @@ void	server_run(struct s_server *srv)
 				/*
 				TODO: define what to do when these dont return good codes
 				*/
+							// TODO: move all the error prints to stdout
+				if (ev[idx].events & EPOLLHUP || ev[idx].events & EPOLLRDHUP)
+				{
+					switch (_handle_disconnect(srv, conn))
+					{
+						case 0:
+							// OK
+							break ;
+						case -1:
+							printf("DISCONNECT: error code while disconnecting %d: %s\n", ev[idx].data.fd, strerror(errno));
+							break ;
+						case 1:
+							printf("DISCONNECT: Internal error when disconnecting %d\n", ev[idx].data.fd);
+							break ;
+						idx++;
+						continue;
+					}
+				}
 				if (ev[idx].events & EPOLLIN)
 				{
 					switch (_handle_msg(srv, conn))
@@ -112,22 +130,6 @@ void	server_run(struct s_server *srv)
 							break ;
 						case 1:
 							printf("WRITE: message to %d caused an internal error\n", conn->fd);
-							break ;
-					}
-				}
-				// TODO: move all the error prints to stdout
-				if (!(ev[idx].events & EPOLLOUT) && !(ev[idx].events & EPOLLIN))
-				{
-					switch (_handle_disconnect(srv, conn))
-					{
-						case 0:
-							// OK
-							break ;
-						case -1:
-							printf("DISCONNECT: error code while disconnecting %d: %s\n", ev[idx].data.fd, strerror(errno));
-							break ;
-						case 1:
-							printf("DISCONNECT: Internal error when disconnecting %d\n", ev[idx].data.fd);
 							break ;
 					}
 				}

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 15:04:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/09 17:59:09 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/10 19:07:38 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ static int _compare_connection_fd(const void *a, const void *b)
 	fd_a = *(int *)a;
 	fd_b = *(int *)b;
 	if (fd_a == fd_b)
-		return (1);
-	return (0);
+		return (0);
+	return (1);
 }
 
 static int	_heap_compare_ids(const void *a, const void *b)

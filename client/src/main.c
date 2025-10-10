@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 18:08:56 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/10 18:21:20 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/10 18:44:54 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	on_stdin(struct s_client *client, void *appdata)
 	struct s_header_chunk	header = {0};
 	char					*content;
 	
+	printf("STDOUT\n");
 	(void)appdata;
 	content = get_next_line(STDIN_FILENO);
 	header.content_length = ft_strlen(content);
