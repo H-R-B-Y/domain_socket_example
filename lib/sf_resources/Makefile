@@ -36,8 +36,9 @@ CLIENT_SRCS			:= \
 
 
 SERVER_SRCS			:= \
-			./src/server/utility/send_to_connection.c \
 			./src/server/utility/send_global.c \
+			./src/server/utility/send_to_connection.c \
+			./src/server/utility/send_to_room.c \
 			./src/server/server_shutdown.c \
 			./src/server/server_run.c \
 			./src/server/server_init.c \

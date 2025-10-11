@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 19:34:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/09 18:01:33 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/11 13:14:04 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ int send_global_message(
 	{
 		if (node->data)
 		{
-			if (server_send_to_connection(srv, ((struct s_connection *)node->data)->
-id, header, content, size) == -1)
+			if (send_to_connection_id(srv, ((struct s_connection *)node->data)->
+id, header, content) == -1)
 				result = -1;
 		}
 		node = node->next;

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 16:32:59 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/08 17:26:23 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/11 13:13:40 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ int	on_message(struct s_server *srv, struct s_message *msg, void *appdata)
 	(void)appdata;
 	printf("Recieved message from client with fd %d and id %zu\n", msg->sender->fd, msg->sender->id);
 	printf("Message content: %s", msg->content);
+	// send_message_to_list(srv, &srv->server_room, msg->header, msg->content, msg->header->content_length);
+	send_to_room(srv, &srv->server_room, msg->header, msg->content);
+	// this is perfect because the message struct will be free'd after this function and i just made the send to client function copy the data, good :D
 	return (1);
 }
 

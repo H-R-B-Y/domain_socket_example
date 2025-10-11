@@ -252,21 +252,6 @@ void	server_stop(struct s_server *srv);
 /*
 Connection management
 */
-/**
- * @brief Send a message to a specific connection by id
- * This is a blocking call, it will not return until the message is sent.
- * If the connection is not found, or there is an error sending the message,
- * it will return -1.
- * TODO: Implement partial writes and non-blocking sends
- * @param srv The server structure
- * @param id The id of the connection to send the message to
- * @param header The header chunk to send
- * @param content The content to send, can be NULL if no content
- * @param size The size of the content, can be 0 if no content
- * @return int 0 on success, -1 on failure
- */
-int	server_send_to_connection(struct s_server *srv, t_connection_id id,
-								struct s_header_chunk *header, void *content, size_t size);
 
 /**
  * @brief Disconnect a connection by id
@@ -299,21 +284,30 @@ Helper functions
  */
 int		send_global_message(struct s_server *srv, struct s_header_chunk *header, void *content, size_t size);
 
+int	send_to_connection_ref(
+	struct s_server *srv, 
+	struct s_connection *conn,
+	struct s_header_chunk *header,
+	void *content
+);
+
+int	send_to_connection_id(
+	struct s_server *srv,
+	t_connection_id id,
+	struct s_header_chunk *header,
+	void *content
+);
+
 /**
- * @brief Send a message to all connections in a list
- * This will send the message to all connections in the provided list.
- * This is a blocking call, it will not return until all messages are sent.
- * If there is an error sending to any connection, it will continue sending to the rest.
- * TODO: Implement partial writes and non-blocking sends
- * @param srv The server structure
- * @param list The list of connections to send the message to
- * @param header The header chunk to send
- * @param content The content to send, can be NULL if no content
- * @param size The size of the content, can be 0 if no content
+ * @brief Send a message to a room of connections
+ * 
+ * @param srv The server instance
+ * @param room The room to send the message too (cdll of connections)
+ * @param header The message header (must have content length populated)
+ * @param content The content of the message
  * @return int 0 on success, -1 on failure
  */
-int		send_message_to_list(struct s_server *srv, t_cdll *list, struct s_header_chunk *header, void *content, size_t size);
-
+int		send_to_room(struct s_server *srv, t_cdll *room, struct s_header_chunk *header, void *content);
 /*
 ToDo:
 - Implement the code

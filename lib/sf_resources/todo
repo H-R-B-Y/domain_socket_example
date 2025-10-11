@@ -8,3 +8,18 @@ Also resetting partial reads (maybe partial writes) should flush the buffer
 and clear the fd for up to the ammount of bytes left in the message.
 
 
+Note: 
+
+The current implementation of the server is going to have to duplicate the message for each client
+it is sending the message too.
+This is not a good idea, it is going to waste a ton of memory, and it gong to be slow.
+I think a better idea for the future would be to have a reference counter of the data so that
+we can track when it is time to free the data. 
+
+Maybe we could do this in the abstract message class that we are going to create in the future.
+
+This would allow us to create a partial write that looks to a message, the message just tracks how many 
+references still point to it, and when there are no more we can free the message content and header.
+
+I think it would be a good idea to implement this ASAP.
+

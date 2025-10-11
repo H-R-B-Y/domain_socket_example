@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 14:53:31 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/10 19:15:58 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/11 12:41:21 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,9 @@ void	server_run(struct s_server *srv)
 						case 1:
 							printf("DISCONNECT: Internal error when disconnecting %d\n", ev[idx].data.fd);
 							break ;
-						idx++;
-						continue;
-					}
+						}
+					idx++;
+					continue;
 				}
 				if (ev[idx].events & EPOLLIN)
 				{

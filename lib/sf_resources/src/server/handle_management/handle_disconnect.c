@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 17:06:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/09 17:59:09 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/11 12:44:18 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	_handle_disconnect(struct s_server *srv, struct s_connection *conn)
 	// remove from lookup (done in connection destroy)
 	// close fd (done in connection destroy)
 	struct s_cdll_node	*room_node;
+	if (srv->on_disconnect)	
+		srv->on_disconnect(srv, conn, srv->appdata);
 	room_node = cdll_find(&srv->server_room, conn, cmp_conn);
 	if (room_node)
 		cdll_remove_node(&srv->server_room, room_node, 0);
