@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 12:49:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/11 13:12:29 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/11 15:18:35 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int		send_to_room(struct s_server *srv, t_cdll *room, struct s_header_chunk *hea
 		); // just assume right now that it worked
 		// TODO: work out what to do on error
 		// TODO: work out lifetime of message sent (right now the header and content are just copied so the ones passed to this function can be free'd but where is the question)
+		node = node->next;
 		idx++;
 	}
 	return (0);

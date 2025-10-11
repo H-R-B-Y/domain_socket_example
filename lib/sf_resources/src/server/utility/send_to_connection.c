@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 19:20:59 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/10/11 13:17:40 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/10/11 15:17:32 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,6 @@ int	send_to_connection_id(
 )
 {
 	struct s_connection	*conn;
-	ssize_t				sent_bytes;
-	size_t				total_bytes;
-	size_t				to_send;
-	char				*send_buffer;
 
 	if (!srv || id == 0)
 		return (0);
